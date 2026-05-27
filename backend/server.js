@@ -5,6 +5,7 @@ const connectDB = require('./db/mongo');
 const authRoutes = require('./routes/auth');
 const leadsRoutes = require('./routes/leads');
 const activitiesRoutes = require('./routes/activities');
+const analyticsRoutes = require('./routes/analytics');
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api', activitiesRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'BizFlow API is running!' });
