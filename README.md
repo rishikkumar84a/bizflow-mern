@@ -120,6 +120,62 @@ npm test
 - `/leads/:id` - Lead detail page
 - `/analytics` - Analytics dashboard (Admin/Manager)
 
+## Deployment
+### Deploying to Render
+1. **Sign up/Log in to Render**: https://render.com/
+2. **Create a MongoDB Atlas account**: https://www.mongodb.com/cloud/atlas/register
+   - Create a free M0 cluster
+   - Whitelist 0.0.0.0/0 (for development only)
+   - Create a database user and copy the connection string
+3. **Connect your GitHub repo to Render**
+4. **Create a new Web Service**:
+   - Root directory: `backend`
+   - Build command: `cd .. && npm run build:frontend && cd backend && npm install`
+   - Start command: `npm start`
+   - Environment variables:
+     ```
+     MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxx.mongodb.net/bizflow?retryWrites=true&w=majority
+     JWT_SECRET=your-strong-secret-key-here
+     JWT_EXPIRE=7d
+     NODE_ENV=production
+     CORS_ORIGIN=https://your-render-url.onrender.com
+     ```
+5. **Add a build script to root package.json**:
+   ```json
+   "scripts": {
+     "build:frontend": "cd frontend && npm install && npm run build"
+   }
+   ```
+
+### Deploying Frontend to Vercel
+1. **Sign up/Log in to Vercel**: https://vercel.com/
+2. **Import your repo**
+3. **Configure project**:
+   - Framework preset: Vite
+   - Root directory: `frontend`
+   - Environment variables:
+     ```
+     VITE_API_URL=https://your-backend-url.onrender.com/api
+     ```
+4. **Deploy!**
+
+### Deploying Backend to Railway
+1. **Sign up/Log in to Railway**: https://railway.app/
+2. **Create a new project**
+3. **Add a MongoDB database** (from Railway's templates)
+4. **Add a Node.js service**:
+   - Root directory: `backend`
+   - Build command: `npm install`
+   - Start command: `npm start`
+   - Environment variables (from MongoDB service):
+     ```
+     MONGODB_URI=${{MongoDB.MONGO_URL}}
+     JWT_SECRET=your-strong-secret-key-here
+     JWT_EXPIRE=7d
+     NODE_ENV=production
+     CORS_ORIGIN=https://your-frontend-url.vercel.app
+     ```
+
 ## Folder Structure
 ```
 bizflow-mern/
